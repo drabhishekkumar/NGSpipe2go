@@ -9,12 +9,12 @@ filbowtie2unique = {
 	
 	transform(".bam") to (".unique.bam") {
 		exec """
-			module load samtools/${SAMTOOLS_VERSION} &&
+			${PREPARE_SAMTOOLS} &&
             if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi                                          &&
 			
-			samtools view -f 2 $FILBOWTIE2UNIQUE_SAMTOOLS_MAPQ -bhu ${input} | samtools sort $FILBOWTIE2UNIQUE_SAMTOOLS_THREADS -T $TMPDIR/\$(basename $output.prefix) -o ${output} -;
+			${RUN_SAMTOOLS} view -f 2 $FILBOWTIE2UNIQUE_SAMTOOLS_MAPQ -bhu ${input} | ${RUN_SAMTOOLS} sort $FILBOWTIE2UNIQUE_SAMTOOLS_THREADS -T $TMPDIR/\$(basename $output.prefix) -o ${output} -;
 		""","filbowtie2unique"
 	}
 }

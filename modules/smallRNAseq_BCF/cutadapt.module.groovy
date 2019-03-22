@@ -18,12 +18,12 @@ Cutadapt = {
 	
      		 exec """
 
-            module load cutadapt/${CUTADAPT_VERSION} &&
+            ${PREPARE_CUTADAPT} &&
         
 			SAMPLENAME_BASE=\$(basename ${SAMPLENAME}) &&
 			
-			cutadapt $ADAPTER_SEQUENCE -O $MINIMUM_OVERLAP -m $MINIMUM_LENGTH_KEEP -M $MAXIMUM_LENGTH_KEEP -o $output1 $input 2>&1 >> ${CUTADAPT_LOGDIR}/\${SAMPLENAME_BASE}.cutadapt.log &&
-			cutadapt $ADAPTER_SEQUENCE -O $MINIMUM_OVERLAP -m $MAXIMUM_LENGTH_KEEP_PLUS1 -o $output2 $input 2>&1 >> ${CUTADAPT_LOGDIR}/\${SAMPLENAME_BASE}.cutadapt_discarded.log
+			${RUN_CUTADAPT} $ADAPTER_SEQUENCE -O $MINIMUM_OVERLAP -m $MINIMUM_LENGTH_KEEP -M $MAXIMUM_LENGTH_KEEP -o $output1 $input 2>&1 >> ${CUTADAPT_LOGDIR}/\${SAMPLENAME_BASE}.cutadapt.log &&
+			${RUN_CUTADAPT} $ADAPTER_SEQUENCE -O $MINIMUM_OVERLAP -m $MAXIMUM_LENGTH_KEEP_PLUS1 -o $output2 $input 2>&1 >> ${CUTADAPT_LOGDIR}/\${SAMPLENAME_BASE}.cutadapt_discarded.log
 			
 		""","Cutadapt"
 	}

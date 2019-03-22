@@ -15,12 +15,12 @@ BaseRecalibration = {
 
       exec """
             echo 'VERSION INFO'  1>&2 &&
-            echo \$(java -jar ${TOOL_GATK}/GenomeAnalysisTK.jar --version) 1>&2 &&
+            echo \$(${RUN_JAVA} -jar ${TOOL_GATK}/GenomeAnalysisTK.jar --version) 1>&2 &&
             echo '/VERSION INFO' 1>&2 &&
 
-            java -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T BaseRecalibrator -I $input -o $output1 -knownSites $VCF_REF  $GATK_FLAGS &&
+            ${RUN_JAVA} -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T BaseRecalibrator -I $input -o $output1 -knownSites $VCF_REF  $GATK_FLAGS &&
 
-            java $JAVA_FLAGS -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T PrintReads -I $input -BQSR $output1 -o $output2 $GATK_FLAGS
+            ${RUN_JAVA} $JAVA_FLAGS -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T PrintReads -I $input -BQSR $output1 -o $output2 $GATK_FLAGS
 
       ""","BaseRecalibration"
    }

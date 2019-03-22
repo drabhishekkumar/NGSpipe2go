@@ -18,9 +18,9 @@ phantompeak = {
 
     transform(".bam") to("_phantompeak.png") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
             
-            Rscript ${TOOL_ENCODEqc}/phantompeak.R $input \$(basename $input.prefix) $PHANTOMPEAK_FLAGS &&
+            ${RUN_R} ${TOOL_ENCODEqc}/phantompeak.R $input \$(basename $input.prefix) $PHANTOMPEAK_FLAGS &&
             mv *_phantompeak.* $output.dir
         ""","phantompeak"
     }

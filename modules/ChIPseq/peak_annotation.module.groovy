@@ -18,9 +18,9 @@ peak_annotation = {
 
     produce("Peak_Annotation.RData") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 
-            Rscript ${TOOL_PEAK_ANNOTATION}/Peak_Annotation.R $peak_annotation_FLAGS;
+            ${RUN_R} ${TOOL_PEAK_ANNOTATION}/Peak_Annotation.R $peak_annotation_FLAGS;
         ""","peak_annotation"
     }
 }

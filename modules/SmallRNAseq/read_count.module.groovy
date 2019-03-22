@@ -13,10 +13,10 @@ CountReads = {
 
 
       exec """
-         module load bedtools/${BEDTOOLS_VERSION} &&
+         ${PREPARE_BEDTOOLS} &&
 
-         bamToBed -i $input | bedtools intersect -a - -b $FEATURES_PATH -s -wa -wb -bed -f 1.0 -nonamecheck > $output1 &&
-         bamToBed -i $input | bedtools intersect -a - -b $FEATURES_PATH -S -wa -wb -bed -f 1.0 -nonamecheck > $output2
+         ${RUN_BEDTOOLS} bamtobed -i $input | ${RUN_BEDTOOLS} intersect -a - -b $FEATURES_PATH -s -wa -wb -bed -f 1.0 -nonamecheck > $output1 &&
+         ${RUN_BEDTOOLS} bamtobed -i $input | ${RUN_BEDTOOLS} intersect -a - -b $FEATURES_PATH -S -wa -wb -bed -f 1.0 -nonamecheck > $output2
 
       ""","CountReads"
    }

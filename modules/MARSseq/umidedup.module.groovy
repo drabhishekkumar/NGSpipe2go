@@ -15,14 +15,14 @@ umidedup = {
     if(ESSENTIAL_PAIRED == "yes"){
       UMIDEDUP_FLAGS = UMIDEDUP_FLAGS + " --paired"
    }
-            //umi_tools dedup $UMIDEDUP_FLAGS -I $input -S $output1 -E $output2 -L $output3 --output-stats=${output1.prefix}.stats   
+            //${RUN_UMITOOLS} dedup $UMIDEDUP_FLAGS -I $input -S $output1 -E $output2 -L $output3 --output-stats=${output1.prefix}.stats   
     
     // run the chunk
     //transform(".bam") to (".umidedup.bam", ".umidedup.err", ".umidedup.log") {
     transform(".bam") to (".umidedup.bam") {
         exec """
-            module load umitools/${UMITOOLS_VERSION} &&
-            umi_tools dedup $UMIDEDUP_FLAGS -I $input -S $output1 --output-stats=${output1.prefix}.stats   
+            ${PREPARE_UMITOOLS} &&
+            ${RUN_UMITOOLS} dedup $UMIDEDUP_FLAGS -I $input -S $output1 --output-stats=${output1.prefix}.stats   
         ""","umidedup"
     }
 }

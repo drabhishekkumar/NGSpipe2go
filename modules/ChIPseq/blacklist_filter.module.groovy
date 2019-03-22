@@ -15,9 +15,9 @@ blacklist_filter = {
 
     produce("BlackList_Filter.RData") {
         exec """
-           module load bedtools/${BEDTOOLS_VERSION} &&
-           module load R/${R_VERSION} &&
-            Rscript ${TOOL_BLACKLIST_FILTER}/BlackList_Filter.R $blacklist_filter_FLAGS;
+           ${PREPARE_BEDTOOLS} &&
+           ${PREPARE_R} &&
+            ${RUN_R} ${TOOL_BLACKLIST_FILTER}/BlackList_Filter.R $blacklist_filter_FLAGS;
         ""","blacklist_filter"
     }
 }

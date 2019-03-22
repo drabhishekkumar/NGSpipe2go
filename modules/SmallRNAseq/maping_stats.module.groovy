@@ -11,10 +11,10 @@ MappingStatsPlot = {
         MAPPING_STATS_OUTDIR + "/figure/totalReads.png") {
 
       exec """
-         module load R/${R_VERSION} &&
+         ${PREPARE_R} &&
 
          cd ${MAPPING_STATS_OUTDIR} &&
-		 Rscript ${MAPPING_STATS_TOOL}
+		 ${RUN_R} ${MAPPING_STATS_TOOL}
 
 		""","MappingStatsPlot"
 	}

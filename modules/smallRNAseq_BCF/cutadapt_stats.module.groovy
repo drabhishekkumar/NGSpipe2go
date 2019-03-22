@@ -9,9 +9,9 @@ CutadaptStats = {
 
 			exec """
 
-                module load R/${R_VERSION} &&
+                ${PREPARE_R} &&
 
-        	 		Rscript ${CUTADAPT_PLOT_TOOL} ${REMOVE_ADAPTER_DATADIR} ${REMOVE_ADAPTER_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
+        	 		${RUN_R} ${CUTADAPT_PLOT_TOOL} ${REMOVE_ADAPTER_DATADIR} ${REMOVE_ADAPTER_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
 
 			""","CutadaptStats"
 		}

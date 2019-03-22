@@ -13,10 +13,10 @@ MergeBam = {
    // run the chunk
    produce(EXP + ".merged.bam") {
       exec """
-         module load samtools/${SAMTOOLS_VERSION} &&
+         ${PREPARE_SAMTOOLS} &&
 
          echo $inputs &&
-         samtools merge $output $inputs 
+         ${RUN_SAMTOOLS} merge $output $inputs 
 
       ""","MergeBam"
    }

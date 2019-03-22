@@ -8,10 +8,10 @@ SelectUniqMappers = {
 
    transform(".bam") to(".unique.bam") {
       exec """
-         module load samtools/${SAMTOOLS_VERSION} &&
+         ${PREPARE_SAMTOOLS} &&
 
-         samtools view -hb -q 255 $input | samtools sort -@ $BOWTIE_THREADS - -o $output &&
-         samtools index $output
+         ${RUN_SAMTOOLS} view -hb -q 255 $input | ${RUN_SAMTOOLS} sort -@ $BOWTIE_THREADS - -o $output &&
+         ${RUN_SAMTOOLS} index $output
       ""","SelectUniqMappers"
    }
 }

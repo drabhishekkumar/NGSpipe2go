@@ -21,9 +21,9 @@ diffbind = {
     // run the chunk
     produce("diffbind.pdf", "diffbind.xls") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
             
-            Rscript ${TOOL_DIFFBIND}/diffbind.R $DIFFBIND_FLAGS
+            ${RUN_R} ${TOOL_DIFFBIND}/diffbind.R $DIFFBIND_FLAGS
         ""","diffbind"
     }
 

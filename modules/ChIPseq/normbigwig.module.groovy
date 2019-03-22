@@ -9,10 +9,10 @@ normbigwig = {
 
     transform(".bam") to("_normbigwig.done") {
         exec """
-            module load deepTools/${DEEPTOOLS_VERSION} &&
-            module load R/${R_VERSION} &&
-            module load kentUtils/${KENTUTILS_VERSION} &&
-            module load samtools/${SAMTOOLS_VERSION} && 
+            ${PREPARE_R} &&
+            ${PREPARE_DEEPTOOLS} &&
+            ${PREPARE_KENTUTILS} &&
+            ${PREPARE_SAMTOOLS} && 
 
             if [ ! -d ${TMP} ]; then
                 mkdir -p ${TMP};
@@ -31,10 +31,10 @@ normbigwig = {
                 if [ "\$BAM" != "\$INPUT" ]; then
                     echo "\${IPname} vs \${INPUTname}" >> $output ;
                     CHRSIZES=${TMP}/\$(basename ${input.prefix}).bam2bw.chrsizes &&
-                    samtools idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
-                    bamCompare -b1 $input -b2 $NORMBIGWIG_MAPPED/$INPUT --numberOfProcessors $NORMBIGWIG_THREADS $NORMBIGWIG_OTHER --outFileName $TMP/\${BAM%.bam}_\${INPUTname}_norm.bedgraph &&
+                    ${RUN_SAMTOOLS} idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
+                    ${RUN_BAMCOMPARE} -b1 $input -b2 $NORMBIGWIG_MAPPED/$INPUT --numberOfProcessors $NORMBIGWIG_THREADS $NORMBIGWIG_OTHER --outFileName $TMP/\${BAM%.bam}_\${INPUTname}_norm.bedgraph &&
                     sort -k1,1 -k2,2n  $TMP/\${BAM%.bam}_\${INPUTname}_norm.bedgraph >  $TMP/\${BAM%.bam}_\${INPUTname}_norm.bedgraph.sorted && 
-                    bedGraphToBigWig \${TMP}/\${BAM%.bam}_\${INPUTname}_norm.bedgraph.sorted $CHRSIZES  $output.dir/\${BAM%.bam}_\${INPUTname}_norm.bw;
+                    ${RUN_BEDGRAPHTOBIGWIG} \${TMP}/\${BAM%.bam}_\${INPUTname}_norm.bedgraph.sorted $CHRSIZES  $output.dir/\${BAM%.bam}_\${INPUTname}_norm.bw;
                     if [ \$? -ne 0 ]; then rm $output; fi;
                 fi;
             done

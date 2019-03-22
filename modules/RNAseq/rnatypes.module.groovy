@@ -27,9 +27,9 @@ RNAtypes = {
             RNAtypes_OUTNAME + ".counts.per.png",
             RNAtypes_OUTNAME + ".counts.rpk.png") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
             
-            Rscript ${TOOL_RNAtypes}/RNAtypes.R $RNAtypes_FLAGS
+            ${RUN_R} ${TOOL_RNAtypes}/RNAtypes.R $RNAtypes_FLAGS
         ""","RNAtypes"
     }
 }

@@ -19,8 +19,8 @@ trackhub_config = {
 
     produce(TRACKHUB_CONFIG) {
         exec """
-           module load R/${R_VERSION} &&
-           Rscript ${TOOL_TRACKHUB}/Configure_Trackhub.R $trackhub_FLAGS;
+           ${PREPARE_R} &&
+           ${RUN_R} ${TOOL_TRACKHUB}/Configure_Trackhub.R $trackhub_FLAGS;
         ""","trackhub_config"
     }
 }

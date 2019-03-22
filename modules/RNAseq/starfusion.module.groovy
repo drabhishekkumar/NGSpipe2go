@@ -17,14 +17,14 @@ STAR_Fusion = {
 
     produce(OUTPUTFILE + "_starfusion.done") {
         exec """
-            module load STAR-Fusion/${STARFUSION_VERSION} &&
+            ${PREPARE_STARFUSION} &&
 
             if [ -n "\$SLURM_JOBID" ]; then
                 export TMPDIR=/jobdir/\${SLURM_JOBID};
 			
             fi                                       &&
 
-	    STAR-Fusion $STARFUSION_FLAGS --tmpdir $TMPDIR/\$(basename $output.prefix) --left_fq $input1 --right_fq $input2 --output_dir $output.prefix;
+	    ${RUN_STARFUSION} $STARFUSION_FLAGS --tmpdir $TMPDIR/\$(basename $output.prefix) --left_fq $input1 --right_fq $input2 --output_dir $output.prefix;
             touch $output;		
           
         ""","STAR_Fusion"

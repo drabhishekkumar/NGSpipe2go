@@ -11,7 +11,7 @@ ipstrength = {
 
     transform(".bam") to("_ipstrength.done") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 
             touch $output;
             if [ ! -e $IPSTRENGTH_TARGETS ]; then
@@ -28,7 +28,7 @@ ipstrength = {
 
                 if [ "\$BAM" != "\$INPUT" ]; then
                     echo "\${IPname} vs \${INPUTname}" >> $output ;
-                    Rscript ${TOOL_ENCODEqc}/IPstrength.R $IPSTRENGTH_MAPPED/\$IP \$IPname $IPSTRENGTH_MAPPED/\$INPUT \$INPUTname \${IPname}.vs.\${INPUTname}_ipstrength $IPSTRENGTH_BSGENOME;
+                    ${RUN_R} ${TOOL_ENCODEqc}/IPstrength.R $IPSTRENGTH_MAPPED/\$IP \$IPname $IPSTRENGTH_MAPPED/\$INPUT \$INPUTname \${IPname}.vs.\${INPUTname}_ipstrength $IPSTRENGTH_BSGENOME;
                     if [ \$? -ne 0 ]; then rm $output; fi;
                     mv \${IPname}.vs.\${INPUTname}_ipstrength* $output.dir;
                 fi;

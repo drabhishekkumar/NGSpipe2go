@@ -21,14 +21,14 @@ BaseRecalibration = {
     transform (".bam") to (".recalibration.table", ".recalibrated.bam") {
         exec """
             
-            module load jdk/${JAVA_VERSION} && 
+            ${PREPARE_JAVA} && 
             if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi                                       &&
 
-            java -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T BaseRecalibrator -nct $GATK_THREADS -R $GATK_BWA_REF -knownSites $GATK_KNOWN_VARIANTS -I $input -o $output1 &&
+            ${RUN_JAVA} -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T BaseRecalibrator -nct $GATK_THREADS -R $GATK_BWA_REF -knownSites $GATK_KNOWN_VARIANTS -I $input -o $output1 &&
             
-            java -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T PrintReads -nct $GATK_THREADS -R $GATK_BWA_REF -I $input -BQSR $output1 -o $output2;
+            ${RUN_JAVA} -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T PrintReads -nct $GATK_THREADS -R $GATK_BWA_REF -I $input -BQSR $output1 -o $output2;
 
         ""","BaseRecalibration"
     }

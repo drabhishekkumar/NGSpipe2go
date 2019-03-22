@@ -15,8 +15,8 @@ FilterChr = {
 
 			chroms=`cut -f1 $FILTER_CHR_FILE` && 
 
-			samtools view -@ $FILTER_CHR_THREADS -b $input ${chroms} > $output &&
-			samtools index $output
+			${RUN_SAMTOOLS} view -@ $FILTER_CHR_THREADS -b $input ${chroms} > $output &&
+			${RUN_SAMTOOLS} index $output
 
 		""","FilterChr"
 	}

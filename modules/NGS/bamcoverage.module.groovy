@@ -13,12 +13,12 @@ bamCoverage = {
 
 	transform(".bam") to(".bw") {
 		exec """
-			module load deepTools/${DEEPTOOLS_VERSION}  &&
+			${PREPARE_DEEPTOOLS}  &&
 			if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi;
 
-			bamCoverage $BAMCOVERAGE_FLAGS --bam $input -o ${output};
+			${RUN_BAMCOVERAGE} $BAMCOVERAGE_FLAGS --bam $input -o ${output};
 		""","bamCoverage"
 	}
 }

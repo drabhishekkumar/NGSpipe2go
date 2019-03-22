@@ -23,8 +23,8 @@ BWA_pe = {
 		
     	produce(OUTPUTFILE + ".bam") {
             exec """
-            	module load bwa/${BWA_VERSION} &&
-            	module load samtools/${SAMTOOLS_VERSION} && 
+            	${PREPARE_BWA} &&
+            	${PREPARE_SAMTOOLS} && 
 			
             	if [ -n "\$SLURM_JOBID" ]; then
                 	export TMPDIR=/jobdir/\${SLURM_JOBID};
@@ -33,9 +33,9 @@ BWA_pe = {
 		SAMPLE_NAME=\$(basename $output.prefix) &&
 		PLATFORM="genomics" &&
 			
-		bwa mem $BWA_FLAGS -R \"@RG\\tID:\${SAMPLE_NAME}\\tSM:\${SAMPLE_NAME}\\tPL:illumina\\tLB:\${SAMPLE_NAME}\\tPU:\${PLATFORM}\" $BWA_REF $input1 $input2 | samtools view ${SAMTOOLS_VIEW_FLAGS} - | samtools sort ${SAMTOOLS_SORT_FLAGS} -T \${TMPDIR}/\${SAMPLE_NAME} -  > ${output} &&
+		${RUN_BWA} mem $BWA_FLAGS -R \"@RG\\tID:\${SAMPLE_NAME}\\tSM:\${SAMPLE_NAME}\\tPL:illumina\\tLB:\${SAMPLE_NAME}\\tPU:\${PLATFORM}\" $BWA_REF $input1 $input2 | ${RUN_SAMTOOLS} view ${SAMTOOLS_VIEW_FLAGS} - | ${RUN_SAMTOOLS} sort ${SAMTOOLS_SORT_FLAGS} -T \${TMPDIR}/\${SAMPLE_NAME} -  > ${output} &&
 			
-		samtools flagstat ${output} 1>&2
+		${RUN_SAMTOOLS} flagstat ${output} 1>&2
             ""","BWA_pe"
     }
 }
@@ -60,16 +60,16 @@ BWA_se = {
 	transform(".fastq.gz") to(".bam") {
         exec """
             
-            module load bwa &&
-            module load samtools &&
+            ${PREPARE_BWA} &&
+            ${PREPARE_SAMTOOLS} &&
 
 			SAMPLE_NAME=\$(basename $output.prefix.prefix) &&
 
 			PLATFORM="genomics" &&
 			
-			bwa mem $BWA_FLAGS -R \"@RG\\tID:\${SAMPLE_NAME}\\tSM:\${SAMPLE_NAME}\\tPL:illumina\\tLB:\${SAMPLE_NAME}\\tPU:\${PLATFORM}\" $BWA_REF $input | samtools view ${SAMTOOLS_VIEW_FLAGS} - | samtools sort ${SAMTOOLS_SORT_FLAGS} -T \${TMP}/\${SAMPLE_NAME} -  > ${output} &&
+			${RUN_BWA} mem $BWA_FLAGS -R \"@RG\\tID:\${SAMPLE_NAME}\\tSM:\${SAMPLE_NAME}\\tPL:illumina\\tLB:\${SAMPLE_NAME}\\tPU:\${PLATFORM}\" $BWA_REF $input | ${RUN_SAMTOOLS} view ${SAMTOOLS_VIEW_FLAGS} - | ${RUN_SAMTOOLS} sort ${SAMTOOLS_SORT_FLAGS} -T \${TMP}/\${SAMPLE_NAME} -  > ${output} &&
 			
-			samtools flagstat ${output} 1>&2
+			${RUN_SAMTOOLS} flagstat ${output} 1>&2
         ""","BWA_se"
     }
 }

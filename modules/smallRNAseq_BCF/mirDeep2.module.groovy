@@ -11,13 +11,13 @@ miRDeep2 = {
 
 		exec """
 
-            module load mirdeep2/${MIRDEEP2_VERSION} &&
+            ${PREPARE_MIRDEEP2} &&
  
 			mkdir -p $output.dir &&
 
 		        cd $output.dir &&
 
-		        miRDeep2.pl $input2 $GENOME_SEQ $input1 $MATURE_MIRNA none $HAIRPIN_MIRNA -t $SPECIES -c -d -v -r ${EXP} -z ".${EXP}" 2> ${EXP}.report.log &&
+		        ${RUN_MIRDEEP2} $input2 $GENOME_SEQ $input1 $MATURE_MIRNA none $HAIRPIN_MIRNA -t $SPECIES -c -d -v -r ${EXP} -z ".${EXP}" 2> ${EXP}.report.log &&
 
 			touch ${EXP}.tmp
 

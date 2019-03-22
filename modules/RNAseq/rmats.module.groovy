@@ -28,7 +28,7 @@ rMATS = {
     // run the chunk
     transform (".txt") to (".done") {
         exec """
-            module load rmats/${RMATS_VERSION} &&
+            ${PREPARE_RMATS} &&
 			if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi;
@@ -46,7 +46,7 @@ rMATS = {
         echo \$bamgroup0 > $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS/\${groups[0]}_samples.txt &&
 				bamgroup1=`awk -v g="\${groups[1]}" -v M="$MAPPED" -v fcol=\$fcol -v gcol=\$gcol 'BEGIN{ OFS=""} {if (\$gcol == g) print M "/" \$fcol}' $input | paste -sd, -` &&
         echo \$bamgroup1 > $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS/\${groups[1]}_samples.txt &&
-				rmats.py --b1 $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS/\${groups[0]}_samples.txt --b2 $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS/\${groups[1]}_samples.txt $RMATS_FLAGS --od $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS &&
+				${RUN_RMATS} --b1 $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS/\${groups[0]}_samples.txt --b2 $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS/\${groups[1]}_samples.txt $RMATS_FLAGS --od $output.dir/\${input_var%$PREMATS_POSTFIX}_rMATS &&
 				touch $output;
 				""","rMATS"
         }

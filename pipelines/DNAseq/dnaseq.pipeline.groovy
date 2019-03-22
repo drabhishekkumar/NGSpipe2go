@@ -1,8 +1,8 @@
 MODULE_FOLDER="./NGSpipe2go/modules/"  // adjust to your projects needs
+CONFIG_FOLDER="./NGSpipe2go/config/"
 
 load MODULE_FOLDER + "DNAseq/essential.vars.groovy"
-load MODULE_FOLDER + "DNAseq/tool.locations.groovy"
-load MODULE_FOLDER + "DNAseq/tool.versions.groovy"
+load CONFIG_FOLDER + "tool.setup.groovy"
 
 load MODULE_FOLDER + "NGS/fastqc.vars.groovy"
 load MODULE_FOLDER + "NGS/fastqc.module.groovy"

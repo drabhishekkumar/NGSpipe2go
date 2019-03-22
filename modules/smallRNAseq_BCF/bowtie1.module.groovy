@@ -19,8 +19,8 @@ Bowtie_se = {
 
             exec """
 			
-            module load bowtie/${BOWTIE_VERSION} &&
-            module load samtools/${SAMTOOLS_VERSION} &&
+            ${PREPARE_BOWTIE} &&
+            ${PREPARE_SAMTOOLS} &&
             
 			if [ ! -e $TMP ]; then
 				mkdir -p $TMP;
@@ -31,7 +31,7 @@ Bowtie_se = {
 			echo 'BOWTIE_FLAGS' $BOWTIE_FLAGS > $output.dir/\${SAMPLENAME_BASE}.bowtie.log &&
 			echo 'BOWTIE_REF' $BOWTIE_REF >> $output.dir/\${SAMPLENAME_BASE}.bowtie.log && 
 
-			zcat $input | bowtie $BOWTIE_FLAGS $BOWTIE_REF - 2>> $output.dir/\${SAMPLENAME_BASE}.bowtie.log | awk '{if (\$1~/^@/) print; else {if(\$5 == 255) print \$0"\tNH:i:1"; else print \$0"\tNH:i:2";}}' | samtools view -bhSu - | samtools sort -@ $BOWTIE_THREADS -T $TMP/\$(basename $output.prefix)_bowtie1_sort - -o $output
+			zcat $input | ${RUN_BOWTIE} $BOWTIE_FLAGS $BOWTIE_REF - 2>> $output.dir/\${SAMPLENAME_BASE}.bowtie.log | awk '{if (\$1~/^@/) print; else {if(\$5 == 255) print \$0"\tNH:i:1"; else print \$0"\tNH:i:2";}}' | ${RUN_SAMTOOLS} view -bhSu - | ${RUN_SAMTOOLS} sort -@ $BOWTIE_THREADS -T $TMP/\$(basename $output.prefix)_bowtie1_sort - -o $output
       		""","Bowtie_se"
    	}
 }

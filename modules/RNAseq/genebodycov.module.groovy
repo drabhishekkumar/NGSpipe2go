@@ -15,9 +15,9 @@ geneBodyCov = {
     // run the chunk
     transform(".bam") to (".geneBodyCoverage.curves.png", ".geneBodyCoverage.r", ".geneBodyCoverage.txt") {
         exec """
-            module load RSeQC/${RSEQC_VERSION} &&
+            ${PREPARE_RSEQC} &&
             
-            python ${TOOL_RSEQC}/geneBody_coverage.py -i $input -o ${output3.prefix.prefix} $GENEBODYCOV_FLAGS
+            ${RUN_GENEBODYCOV} -i $input -o ${output3.prefix.prefix} $GENEBODYCOV_FLAGS
         ""","geneBodyCov"
     }
     forward input

@@ -11,9 +11,9 @@ inferexperiment = {
     // run the chunk
     transform(".bam") to (input.prefix + "_inferexperiment.txt") {
         exec """
-            module load RSeQC/${RSEQC_VERSION} &&
+            ${PREPARE_RSEQC} &&
 
-            infer_experiment.py -i $input $INFEREXPERIMENT_EXTRA $INFEREXPERIMENT_BED > $output
+            ${RUN_INFEREXPERIMENT} -i $input $INFEREXPERIMENT_EXTRA $INFEREXPERIMENT_BED > $output
         ""","inferexperiment"
     }
 

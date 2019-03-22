@@ -12,12 +12,12 @@ AddRG = {
    transform(".bam") to (".rg.bam"){
       exec """
             echo 'VERSION INFO'  1>&2 &&
-            echo \$(java -jar ${TOOL_PICARD}/picard.jar AddOrReplaceReadGroups --version) 1>&2 &&
+            echo \$(${RUN_JAVA} -jar ${TOOL_PICARD}/picard.jar AddOrReplaceReadGroups --version) 1>&2 &&
             echo '/VERSION INFO' 1>&2 &&
 
             PLATFORM="genomics" &&
 
-            java $JAVA_FLAGS -jar ${TOOL_PICARD}/picard.jar AddOrReplaceReadGroups I=$input O=$output SO=coordinate RGID=${EXP} RGLB=${EXP} RGPL=illumina RGPU=${PLATFORM} RGSM=${EXP}
+            ${RUN_JAVA} $JAVA_FLAGS -jar ${TOOL_PICARD}/picard.jar AddOrReplaceReadGroups I=$input O=$output SO=coordinate RGID=${EXP} RGLB=${EXP} RGPL=illumina RGPU=${PLATFORM} RGSM=${EXP}
 
       ""","AddRG"
    }

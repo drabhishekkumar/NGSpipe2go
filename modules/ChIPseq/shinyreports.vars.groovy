@@ -24,4 +24,4 @@ SHINYREPS_PLOTS_COLUMN=4            //number of columns to splits the plot grids
 SHINYREPS_PEAK_ANNOTATION=RESULTS + "/Peak_Annotation" // where the peak annotation results lie
 SHINYREPS_GREAT=RESULTS + "/GREAT_analysis" // where the GO enrichment results lie
 SHINYREPS_TRACKHUB_DONE=PROJECT + "/trackhub.done" // contains trackhub URL
-SHINYREPS_TOOL_VERSIONS= PROJECT + "/NGSpipe2go/modules/ChIPseq/tool.versions.groovy" //where the tool versions listed
+SHINYREPS_TOOL_VERSIONS= PROJECT + "/NGSpipe2go/config/tool.versions.groovy" //where the tool versions listed

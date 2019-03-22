@@ -10,10 +10,10 @@ MappingStats = {
 
 			exec """
 
-                module load R/${R_VERSION} &&
-                module load samtools/${SAMTOOLS_VERSION} &&
+                ${PREPARE_R} &&
+                ${PREPARE_SAMTOOLS} &&
 
-			 	Rscript ${MAPPING_STATS_TOOL} ${MAPPING_STATS_DATADIR} ${MAPPING_STATS_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
+			 	${RUN_R} ${MAPPING_STATS_TOOL} ${MAPPING_STATS_DATADIR} ${MAPPING_STATS_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
 
 			""","MappingStats"
 		}

@@ -46,8 +46,8 @@ STAR_pe = {
                 " --readFilesCommand zcat"
 
       exec """
-         STAR $STAR_FLAGS --readFilesIn $inputs | ${TOOL_SAMTOOLS}/samtools view -bhSu -F 256
-- | ${TOOL_SAMTOOLS}/samtools sort -@ $STAR_THREADS - $EXP &&
+         STAR $STAR_FLAGS --readFilesIn $inputs | ${TOOL_SAMTOOLS}/${RUN_SAMTOOLS} view -bhSu -F 256
+- | ${TOOL_SAMTOOLS}/${RUN_SAMTOOLS} sort -@ $STAR_THREADS - $EXP &&
          rm ${EXP}.bam &&
 
          rm -rf ${TMP}/${EXP}

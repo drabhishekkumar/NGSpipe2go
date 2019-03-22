@@ -9,7 +9,7 @@ PerformDEGAnalaysis = {
    produce("normlization_factors.txt"){
       exec """
 
-         module load R/${R_VERSION} &&
+         ${PREPARE_R} &&
          
          if [ -n "\$LSB_JOBID" ]; then
             export TMPDIR=/jobdir/\${LSB_JOBID};

@@ -18,10 +18,10 @@ MarkDups = {
 
       exec """
             echo 'VERSION INFO'  1>&2 &&
-            echo \$(java -jar ${TOOL_PICARD}/picard.jar MarkDuplicates --version) 1>&2 &&
+            echo \$(${RUN_JAVA} -jar ${TOOL_PICARD}/picard.jar MarkDuplicates --version) 1>&2 &&
             echo '/VERSION INFO' 1>&2 &&
 
-            java $JAVA_FLAGS -jar ${TOOL_PICARD}/picard.jar MarkDuplicates $MARKDUPS_FLAGS I=$input O=$output M=${input.prefix}_dupmetrics.tsv
+            ${RUN_JAVA} $JAVA_FLAGS -jar ${TOOL_PICARD}/picard.jar MarkDuplicates $MARKDUPS_FLAGS I=$input O=$output M=${input.prefix}_dupmetrics.tsv
 
       ""","MarkDups"
    }

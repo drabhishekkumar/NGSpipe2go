@@ -10,9 +10,9 @@ BAMindexer = {
 	transform(".bam") to(".bam.bai") {
 		exec """
 
-			module load samtools/${SAMTOOLS_VERSION} &&
+			${PREPARE_SAMTOOLS} &&
 
-			samtools index $input
+			${RUN_SAMTOOLS} index $input
 		""","BAMindexer"
 	}
 

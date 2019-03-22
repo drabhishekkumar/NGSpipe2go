@@ -1,7 +1,8 @@
 MODULE_FOLDER="./NGSpipe2go/modules/" // adjust to your projects needs
+CONFIG_FOLDER="./NGSpipe2go/config/"
 
 load MODULE_FOLDER + "RNAseqVariantCalling/essential.vars.groovy"
-load MODULE_FOLDER + "RNAseqVariantCalling/tool.locations.groovy"
+load CONFIG_FOLDER + "tool.setup.groovy"
 
 load MODULE_FOLDER + "RNAseqVariantCalling/star1pass.module.groovy"
 load MODULE_FOLDER + "RNAseqVariantCalling/star1pass.vars.groovy"

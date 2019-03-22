@@ -13,7 +13,7 @@ miRDeep2Mapper = {
 
 		exec """
 
-            module load mirdeep2/${MIRDEEP2_VERSION} &&
+            ${PREPARE_MIRDEEP2} &&
 
 			if [ ! -d ${TMP} ]; then
                                 mkdir -p ${TMP};
@@ -24,7 +24,7 @@ miRDeep2Mapper = {
 
 			cd $output.dir &&
 
-			mapper.pl ${TMP}/\${SAMPLENAME_BASE} -e -p $GENOME_REF -s $output2 -t $output1 -h -m -i -j -o 8 &> ${OUTPUTLOG_MAIN}.mapper.log &&
+			${RUN_MIRDEEP2MAPPER} ${TMP}/\${SAMPLENAME_BASE} -e -p $GENOME_REF -s $output2 -t $output1 -h -m -i -j -o 8 &> ${OUTPUTLOG_MAIN}.mapper.log &&
 
 			rm ${TMP}/\${SAMPLENAME_BASE}
 			

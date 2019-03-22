@@ -15,7 +15,7 @@ FastQScreen = {
 
 		exec """
 
-            module load fastq_screen/${FASTQSCREEN_VERSION} &&
+            ${PREPARE_FASTQSCREEN} &&
 			
 			if [ ! -e "$output.prefix" ]; then
 		                mkdir $output.prefix;
@@ -31,7 +31,7 @@ FastQScreen = {
 			done;
 
 			SAMPLENAME_BASE=\$(basename ${SAMPLENAME}) &&
-			fastq_screen $FASTQSCREEN_FLAGS --conf $output.prefix/fastqscreen.conf --outdir $output.prefix $input 2> $output.dir/\${SAMPLENAME_BASE}.log;
+			${RUN_FASTQSCREEN} $FASTQSCREEN_FLAGS --conf $output.prefix/fastqscreen.conf --outdir $output.prefix $input 2> $output.dir/\${SAMPLENAME_BASE}.log;
 			touch $output;
 
 		""","FastQScreen"

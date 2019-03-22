@@ -8,10 +8,10 @@ SensorCoverage = {
 	transform(".bam") to(".plus.cov", ".minus.cov") {
 		exec """
 
-			module load bedtools/${BEDTOOLS_VERSION} &&
+			${PREPARE_BEDTOOLS} &&
 
-			genomeCoverageBed -ibam $input -d -strand "+" | grep "21U_mCherry_sensor" > $output1 &&
-			genomeCoverageBed -ibam $input -d -strand "-" | grep "21U_mCherry_sensor" > $output2
+			${RUN_BEDTOOLS} genomecov -ibam $input -d -strand "+" | grep "21U_mCherry_sensor" > $output1 &&
+			${RUN_BEDTOOLS} genomecov -ibam $input -d -strand "-" | grep "21U_mCherry_sensor" > $output2
 
 		""","SensorCoverage"
 	}

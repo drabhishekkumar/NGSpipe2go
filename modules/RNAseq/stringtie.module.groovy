@@ -32,13 +32,13 @@ StringTie = {
     // code chunk
     transform(".bam") to("_stringtie.done") {
       exec """
-        module load stringtie/${STRINGTIE_VERSION} && 
+        ${PREPARE_STRINGTIE} && 
         base=\$(basename $input) &&
         base=\${base%.bam} &&
         echo \$base &&
         echo $STRINGTIE_FLAGS &&
         mkdir $output.dir/\$base &&
-        stringtie $input $STRINGTIE_FLAGS -A $output.dir/\${base}/\${base}_gene_abund.tab -o $output.dir/\$base/\${base}_stringtie.gtf &&
+        ${RUN_STRINGTIE} $input $STRINGTIE_FLAGS -A $output.dir/\${base}/\${base}_gene_abund.tab -o $output.dir/\$base/\${base}_stringtie.gtf &&
         touch $output 
         ""","StringTie"
     }

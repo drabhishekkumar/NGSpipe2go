@@ -9,9 +9,9 @@ trackhub = {
 
     transform(".yaml") to (".done") {
         exec """
-           module load kentUtils/${KENTUTILS_VERSION} &&
-           module load R/${R_VERSION} &&
-           Rscript ${TOOL_TRACKHUB}/Make_Trackhub.R $trackhub_FLAGS
+           ${PREPARE_KENTUTILS} &&
+           ${PREPARE_R} &&
+           ${RUN_R} ${TOOL_TRACKHUB}/Make_Trackhub.R $trackhub_FLAGS
         ""","trackhub"
     }
 }

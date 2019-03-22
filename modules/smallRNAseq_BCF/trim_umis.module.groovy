@@ -12,9 +12,9 @@ TrimUMIs = {
 
 		exec """
 
-            module load seqtk/${SEQTK_VERSION} &&
+            ${PREPARE_SEQTK} &&
 
-		    seqtk trimfq -b ${LEFT_TRIM} -e ${RIGHT_TRIM} $input | gzip > $output
+		    ${RUN_SEQTK} trimfq -b ${LEFT_TRIM} -e ${RIGHT_TRIM} $input | gzip > $output
 
 		""","TrimUMIs"
 	}

@@ -9,9 +9,9 @@ FastQQualityFilterStats = {
 
 			exec """
 
-            module load R/${R_VERSION} && 
+            ${PREPARE_R} && 
 
-			        Rscript ${QUALITY_FILTER_PLOT_TOOL} ${REMOVE_LOWQUAL_DATADIR} ${REMOVE_LOWQUAL_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX} 
+			        ${RUN_R} ${QUALITY_FILTER_PLOT_TOOL} ${REMOVE_LOWQUAL_DATADIR} ${REMOVE_LOWQUAL_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX} 
 
 			""","FastQQualityFilterStats"
 		}

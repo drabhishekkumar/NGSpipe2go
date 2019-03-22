@@ -9,9 +9,9 @@ DedupStats = {
 
 			exec """
 
-                    module load R/${R_VERSION} &&
+                    ${PREPARE_R} &&
 
-			        Rscript ${DEDUP_PLOT_TOOL} ${REMOVE_DUP_DATADIR} ${REMOVE_DUP_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
+			        ${RUN_R} ${DEDUP_PLOT_TOOL} ${REMOVE_DUP_DATADIR} ${REMOVE_DUP_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
 
 			""","DedupStats"
 		}

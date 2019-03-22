@@ -9,16 +9,16 @@ FilterRNAClasses = {
    transform(".bam") to (".21U.bam", ".22G.bam", ".26G.bam"){
 
       exec """
-         module load bedtools/${BEDTOOLS_VERSION} &&
-         module load htseq/${HTSEQ_VERSION} &&
+         ${PREPARE_BEDTOOLS} &&
+         ${PREPARE_HTSEQ} &&
 
-         python $FILTER_CLASSES_TOOL_PATH -i $input -m 21 -M 21 -o stdout | intersectBed -a stdin -b $FILTER_CLASSES_21U_REF -s > $output1 &&
-         python $FILTER_CLASSES_TOOL_PATH -i $input -m 20 -M 23 -o stdout | intersectBed -a stdin -b $FILTER_CLASSES_22G_REF -S > $output2 &&
-         python $FILTER_CLASSES_TOOL_PATH -i $input -m 26 -M 26 -o stdout | intersectBed -a stdin -b $FILTER_CLASSES_26G_REF -S > $output3 &&
+         python $FILTER_CLASSES_TOOL_PATH -i $input -m 21 -M 21 -o stdout | ${RUN_BEDTOOLS} intersect -a stdin -b $FILTER_CLASSES_21U_REF -s > $output1 &&
+         python $FILTER_CLASSES_TOOL_PATH -i $input -m 20 -M 23 -o stdout | ${RUN_BEDTOOLS} intersect -a stdin -b $FILTER_CLASSES_22G_REF -S > $output2 &&
+         python $FILTER_CLASSES_TOOL_PATH -i $input -m 26 -M 26 -o stdout | ${RUN_BEDTOOLS} intersect -a stdin -b $FILTER_CLASSES_26G_REF -S > $output3 &&
 
-         samtools index $output1 &&
-         samtools index $output2 &&
-         samtools index $output3
+         ${RUN_SAMTOOLS} index $output1 &&
+         ${RUN_SAMTOOLS} index $output2 &&
+         ${RUN_SAMTOOLS} index $output3
 
       ""","FilterRNAClasses"
    }

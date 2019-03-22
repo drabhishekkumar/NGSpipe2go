@@ -22,12 +22,12 @@ VariantCallUG = {
     // usage parameters https://www.broadinstitute.org/gatk/gatkdocs/org_broadinstitute_gatk_tools_walkers_genotyper_UnifiedGenotyper.php
         exec """
            
-            module load jdk/${JAVA_VERSION} &&
+            ${PREPARE_JAVA} &&
             if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi                                       &&
 
-            java -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T UnifiedGenotyper -nt $GATK_THREADS -nct $GATK_THREADS -R $GATK_BWA_REF -glm BOTH -I $input -o $output $GATK_FLAGS;
+            ${RUN_JAVA} -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T UnifiedGenotyper -nt $GATK_THREADS -nct $GATK_THREADS -R $GATK_BWA_REF -glm BOTH -I $input -o $output $GATK_FLAGS;
         ""","VariantCallUG"
     }
     

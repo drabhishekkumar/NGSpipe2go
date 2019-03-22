@@ -10,15 +10,15 @@ BamCoverageStrands = {
 
 	transform(".bam") to (".fwd.scaled.bw", ".rev.scaled.bw") {
      	exec """
-        module load bedtools/${DEEPTOOLS_VERSION} &&
+        ${PREPARE_DEEPTOOLS} &&
 
-        bamCoverage --bam $input -o $output1 \
+        ${RUN_BAMCOVERAGE} --bam $input -o $output1 \
             --normalizeTo1x $GENOME_SIZE \
             --binSize 10 \
             --numberOfProcessors $ESSENTIAL_CORES \
             --filterRNAstrand forward &&
 
-        bamCoverage --bam $input -o $output1 \
+        ${RUN_BAMCOVERAGE} --bam $input -o $output1 \
             --normalizeTo1x $GENOME_SIZE \
             --binSize 10 \
             --numberOfProcessors $ESSENTIAL_CORES \

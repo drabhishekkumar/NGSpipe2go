@@ -14,9 +14,9 @@ PingPongPro = {
 
       exec """
 
-         module load pingpongpro/${PINGPONGPRO_VERSION} &&
+         ${PREPARE_PINGPONGPRO} &&
 
-         pingpongpro -i $input -t $FEATURES_PATH -o $OUT_FOLDER
+         ${RUN_PINGPONGPRO} -i $input -t $FEATURES_PATH -o $OUT_FOLDER
 
       ""","PingPongPro"
    }

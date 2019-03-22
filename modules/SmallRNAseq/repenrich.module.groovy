@@ -19,18 +19,18 @@ RepEnrich = {
             SAMPLE_NAME + "_fraction_counts.txt") {
 
     exec """
-        module load RepEnrich/${REPENRICH_VERSION} &&
-        module load bowtie/${BOWTIE_VERSION} &&
-        module load bedtools/2.23.0 &&
-        module load samtools/${SAMTOOLS_VERSION} &&
+        ${PREPARE_REPENRICH} &&
+        ${PREPARE_BOWTIE} &&
+        ${PREPARE_BEDTOOLS} &&
+        ${PREPARE_SAMTOOLS} &&
 
         MULTI=${SAMPLE_NAME}".multimap.fastq" 
         UNIQ=${SAMPLE_NAME}".bam"
 
-        zcat $input | bowtie $REPENRICH_FLAGS --max $output.dir/${MULTI} $REPENRICH_REF - 2> $output1 | samtools view -bhSu - | samtools sort -@ $REPENRICH_THREADS - -o $output.dir/${UNIQ} &&
-        samtools index $output.dir/${UNIQ} &&
+        zcat $input | ${RUN_BOWTIE} $REPENRICH_FLAGS --max $output.dir/${MULTI} $REPENRICH_REF - 2> $output1 | ${RUN_SAMTOOLS} view -bhSu - | ${RUN_SAMTOOLS} sort -@ $REPENRICH_THREADS - -o $output.dir/${UNIQ} &&
+        ${RUN_SAMTOOLS} index $output.dir/${UNIQ} &&
 
-        RepEnrich.py ${REPEAT_MASKER} $output.dir ${SAMPLE_NAME} ${REPEAT_REF} $output.dir/${MULTI} $output.dir/${UNIQ} --cpus ${REPENRICH_THREADS} --is_bed ${REPENRICH_BED} &&
+        ${RUN_REPENRICH} ${REPEAT_MASKER} $output.dir ${SAMPLE_NAME} ${REPEAT_REF} $output.dir/${MULTI} $output.dir/${UNIQ} --cpus ${REPENRICH_THREADS} --is_bed ${REPENRICH_BED} &&
 
         rm $output.dir/${MULTI} $output.dir/${UNIQ}
 

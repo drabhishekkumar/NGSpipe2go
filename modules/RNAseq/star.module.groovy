@@ -60,8 +60,8 @@ STAR = {
     // TODO: warn if the genome index was created using another version of STAR?
     produce(OUTPUTFILE + ".bam", OUTPUTFILE + "Log.final.out") {
         exec """
-            module load star/${STAR_VERSION} && 
-            module load samtools/${SAMTOOLS_VERSION} &&
+            ${PREPARE_STAR} && 
+            ${PREPARE_SAMTOOLS} &&
             
             if [ -e $TMP/$OUTPUTFILE ];
             then
@@ -69,7 +69,7 @@ STAR = {
                 rm -r $TMP/$OUTPUTFILE*;
             fi &&
             
-            STAR $STAR_FLAGS --readFilesIn $inputs | samtools view $SAMTOOLS_VIEW_FLAGS - | samtools sort $SAMTOOLS_SORT_FLAGS -T ${TMP}/${OUTPUTFILE}_sort - > $output1 &&
+            ${RUN_STAR} $STAR_FLAGS --readFilesIn $inputs | ${RUN_SAMTOOLS} view $SAMTOOLS_VIEW_FLAGS - | ${RUN_SAMTOOLS} sort $SAMTOOLS_SORT_FLAGS -T ${TMP}/${OUTPUTFILE}_sort - > $output1 &&
             
             mv ${LOGS}/STAR/${OUTPUTFILE}SJ.out.tab $output.dir &&
             ln -s ${LOGS}/STAR/${OUTPUTFILE}Log.final.out $output.dir

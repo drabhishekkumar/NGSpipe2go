@@ -8,24 +8,24 @@ Bam2bwStrand = {
 
 	transform(".bam") to (".scaled.fwd.bw", ".scaled.rev.bw")  {
 		exec """
-			module load bedtools/${BEDTOOLS_VERSION} &&
-			module load samtools/${SAMTOOLS_VERSION} &&
-			module load kentUtils/${KENTUTILS_VERSION} &&
+			${PREPARE_BEDTOOLS} &&
+			${PREPARE_SAMTOOLS} &&
+			${PREPARE_KENTUTILS} &&
 
 			if [ ! -d ${TMP} ]; then
 				mkdir -p ${TMP};
 			fi &&
 			
 			CHRSIZES=${TMP}/\$(basename ${input.prefix}).bam2bw.chrsizes &&
-			samtools idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
-			TOTAL_MAPPED=\$( samtools flagstat $input | head -n1| cut -f1 -d" ") &&
+			${RUN_SAMTOOLS} idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
+			TOTAL_MAPPED=\$( ${RUN_SAMTOOLS} flagstat $input | head -n1| cut -f1 -d" ") &&
 			SCALE=\$(echo "1000000/\$TOTAL_MAPPED" | bc -l) &&
 
-			genomeCoverageBed -bg -split -scale \${SCALE} -strand "+" -ibam ${input} -g ${CHRSIZES} > ${output1.prefix}.bedgraph &&
-			bedGraphToBigWig ${output1.prefix}.bedgraph ${CHRSIZES} $output1 &&
+			${RUN_BEDTOOLS} genomecov -bg -split -scale \${SCALE} -strand "+" -ibam ${input} -g ${CHRSIZES} > ${output1.prefix}.bedgraph &&
+			${RUN_BEDGRAPHTOBIGWIG} ${output1.prefix}.bedgraph ${CHRSIZES} $output1 &&
 			
-			genomeCoverageBed -bg -split -scale ${SCALE} -strand "-" -ibam ${input} -g ${CHRSIZES} > ${output2.prefix}.bedgraph &&
-			bedGraphToBigWig ${output2.prefix}.bedgraph ${CHRSIZES} $output2 &&
+			${RUN_BEDTOOLS} genomecov -bg -split -scale ${SCALE} -strand "-" -ibam ${input} -g ${CHRSIZES} > ${output2.prefix}.bedgraph &&
+			${RUN_BEDGRAPHTOBIGWIG} ${output2.prefix}.bedgraph ${CHRSIZES} $output2 &&
 			
 			rm ${CHRSIZES} ${output1.prefix}.bedgraph ${output2.prefix}.bedgraph
 

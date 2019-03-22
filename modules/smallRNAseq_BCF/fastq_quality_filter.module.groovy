@@ -24,11 +24,11 @@ FastQQualityFilter = {
 
       		exec """
 
-            module load fastx_toolkit/${FASTX_TOOLKIT_VERSION} &&
+            ${PREPARE_FASTX} &&
 
 			 SAMPLENAME_BASE=\$(basename ${SAMPLENAME}) &&
 
-		         zcat $input | fastq_quality_filter $FASTQ_QUALITY_FILTER_FLAGS -o $output 2>&1 >> ${FASTQ_QUALITY_FILTER_LOGDIR}/\${SAMPLENAME_BASE}.fastq_quality_filter.log 
+		         zcat $input | ${RUN_FASTQ_QUALITY_FILTER} $FASTQ_QUALITY_FILTER_FLAGS -o $output 2>&1 >> ${FASTQ_QUALITY_FILTER_LOGDIR}/\${SAMPLENAME_BASE}.fastq_quality_filter.log 
 
       		""","FastQQualityFilter"
    	}

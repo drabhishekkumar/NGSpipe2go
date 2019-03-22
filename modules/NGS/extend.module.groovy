@@ -13,20 +13,20 @@ extend = {
 
 	transform(".bam") to ("_ext.bam") {
 		exec """
-            module load bedtools/${BEDTOOLS_VERSION} &&
-            module load samtools/${SAMTOOLS_VERSION} &&
+            ${PREPARE_BEDTOOLS} &&
+            ${PREPARE_SAMTOOLS} &&
 
 			if [ ! -d $TMP ]; then
 				mkdir -p $TMP;
 			fi &&
 			
 			CHRSIZES=${TMP}/\$(basename ${input.prefix}).extend.chrsizes  &&
-			samtools idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
-			bedtools bamtobed -split -i $input |
-			bedtools slop -g \$CHRSIZES -l 0 -r $EXTEND_FRAGLEN -s |
-			bedtools bedtobam -ubam -g \$CHRSIZES |
-			samtools sort $SAMTOOLS_SORT_FLAGS -T $TMP/\$(basename $output.prefix) - > $output &&
-			samtools index $output
+			${RUN_SAMTOOLS} idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
+			${RUN_BEDTOOLS} bamtobed -split -i $input |
+			${RUN_BEDTOOLS} slop -g \$CHRSIZES -l 0 -r $EXTEND_FRAGLEN -s |
+			${RUN_BEDTOOLS} bedtobam -ubam -g \$CHRSIZES |
+			${RUN_SAMTOOLS} sort $SAMTOOLS_SORT_FLAGS -T $TMP/\$(basename $output.prefix) - > $output &&
+			${RUN_SAMTOOLS} index $output
 		""","extend"
 	}
 }

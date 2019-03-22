@@ -18,9 +18,9 @@ GO_Enrichment = {
 
     transform(".RData") to("_GO.done") {
         exec """
-        module load R/${R_VERSION} &&
+        ${PREPARE_R} &&
         touch $output &&
-        Rscript ${TOOL_GO}/GO_Enrichment.R rData=$input $GO_Enrichment_FLAGS &&
+        ${RUN_R} ${TOOL_GO}/GO_Enrichment.R rData=$input $GO_Enrichment_FLAGS &&
         if [ \$? -ne 0 ]; then rm $output; fi;
     ""","GO_Enrichment"
     }

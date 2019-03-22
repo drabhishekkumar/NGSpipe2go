@@ -8,9 +8,9 @@ CombinedStats = {
 	produce(COMBINED_STATS_PLOTDIR + "/allTrimmingStats.pdf", COMBINED_STATS_PLOTDIR + "/allTrimmingStats.png") {
 
 		exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 			
-            Rscript ${COMBINED_STATS_PLOT_TOOL} ${COMBINED_STATS_DATADIR} ${COMBINED_STATS_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
+            ${RUN_R} ${COMBINED_STATS_PLOT_TOOL} ${COMBINED_STATS_DATADIR} ${COMBINED_STATS_PLOTDIR} ${ESSENTIAL_SAMPLE_PREFIX}
 
 		""","CombinedStats"
 	}

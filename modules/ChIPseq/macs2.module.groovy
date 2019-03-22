@@ -15,7 +15,7 @@ macs2 = {
     }
     transform(".bam") to("_macs2.done") {
         exec """
-            module load macs2/${MACS2_VERSION} &&
+            ${PREPARE_MACS2} &&
 
             touch $output;
             if [ ! -e $MACS2_TARGETS ]; then
@@ -32,7 +32,7 @@ macs2 = {
 
                 if [ "\$BAM" != "\$INPUT" ]; then
                     echo "\${IPname} vs \${INPUTname}" >> $output &&
-                    macs2 callpeak -t $MACS2_MAPPED/\$IP -c $MACS2_MAPPED/\$INPUT -n \${IPname}.vs.\${INPUTname}_macs2 $MACS2_FLAGS &&
+                    ${RUN_MACS2} callpeak -t $MACS2_MAPPED/\$IP -c $MACS2_MAPPED/\$INPUT -n \${IPname}.vs.\${INPUTname}_macs2 $MACS2_FLAGS &&
                     if [ \$? -ne 0 ]; then rm $output; fi &&
                     mv \${IPname}.vs.\${INPUTname}_macs2* $output.dir;
                 fi;

@@ -21,8 +21,8 @@ GREAT = {
     produce("GREAT.RData") {
         exec """
 
-           module load R/${R_VERSION} &&
-            Rscript ${TOOL_GO}/GREAT.R $GREAT_FLAGS;
+           ${PREPARE_R} &&
+            ${RUN_R} ${TOOL_GO}/GREAT.R $GREAT_FLAGS;
         ""","GREAT"
     }
 }

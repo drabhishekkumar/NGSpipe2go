@@ -31,9 +31,9 @@ SubreadCount = {
 	transform(".bam") to (".raw_readcounts.tsv") {
 		exec """
 
-            module load subread/${SUBREAD_VERSION} &&
+            ${PREPARE_SUBREAD} &&
 			
-			featureCounts $SUBREAD_FLAGS -o $output $input 2> ${output.prefix}_subreadlog.stderr
+			${RUN_FEATURECOUNTS} $SUBREAD_FLAGS -o $output $input 2> ${output.prefix}_subreadlog.stderr
 	
 		""","SubreadCount"
 	}

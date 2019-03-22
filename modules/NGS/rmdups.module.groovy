@@ -13,10 +13,10 @@ RmDups = {
 
 	transform(".bam") to (".duprm.bam") {
 		exec """
-			module load jdk/${JAVA_VERSION} &&
-            module load picard/${PICARD_VERSION} &&
+			${PREPARE_JAVA} &&
+            ${PREPARE_PICARD} &&
 			
-			java $JAVA_FLAGS -jar ${TOOL_PICARD}/picard.jar MarkDuplicates $MARKDUPS_FLAGS INPUT=$input OUTPUT=$output METRICS_FILE=${input.prefix}_dupmetrics.tsv
+			${RUN_JAVA} $JAVA_FLAGS -jar ${TOOL_PICARD}/picard.jar MarkDuplicates $MARKDUPS_FLAGS INPUT=$input OUTPUT=$output METRICS_FILE=${input.prefix}_dupmetrics.tsv
 		""","RmDups"
 	}
 }

@@ -13,7 +13,7 @@ FastqScreen = {
 
 	transform(".fastq.gz") to("_fastqscreen.done") {
 		exec """
-			module load fastq_screen/${FASTQSCREEN_VERSION} && 
+			${PREPARE_FASTQSCREEN} && 
 
 			if [ ! -e "$output.prefix" ]; then
                 mkdir $output.prefix;
@@ -25,7 +25,7 @@ FastqScreen = {
 				reference=(\${references[i]//::/ });
 				echo -e "DATABASE\t\${reference[0]}\t\${reference[1]}" >> $output.prefix/fastqscreen.conf;
 			done;
-			fastq_screen $FASTQSCREEN_PARAM --conf $output.prefix/fastqscreen.conf $FASTQSCREEN_PARAM --outdir $output.prefix $input;
+			${RUN_FASTQSCREEN} $FASTQSCREEN_PARAM --conf $output.prefix/fastqscreen.conf $FASTQSCREEN_PARAM --outdir $output.prefix $input;
 			touch $output;
 		""","FastqScreen"
 	}

@@ -11,9 +11,9 @@ FastxTrimmer = {
 
    transform(".fastq.gz") to (".23bp.fastq.gz") {
       exec """
-         module load fastx_toolkit/${FASTX_VERSION} &&
+         ${PREPARE_FASTX} &&
 
-         zcat $input | fastx_trimmer $FASTQ_TRIMMER_FLAGS -o $output
+         zcat $input | ${RUN_FASTX_TRIMMER} $FASTQ_TRIMMER_FLAGS -o $output
       ""","FastxTrimmer"
    }
 }

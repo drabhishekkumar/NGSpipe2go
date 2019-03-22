@@ -22,10 +22,10 @@ qualimap = {
 
     transform(".bam") to("_counts.txt") {
         exec """
-            module load qualimap/${QUALIMAP_VERSION} &&
+            ${PREPARE_QUALIMAP} &&
             unset DISPLAY;
             echo $output.prefix;
-            qualimap rnaseq -bam $input -outdir ${output.prefix}_qualimap -outformat html $QUALIMAP_GENESGTF -oc $output -p $QUALIMAP_PROTOCOL $QUALIMAP_EXTRA
+            ${RUN_QUALIMAP} rnaseq -bam $input -outdir ${output.prefix}_qualimap -outformat html $QUALIMAP_GENESGTF -oc $output -p $QUALIMAP_PROTOCOL $QUALIMAP_EXTRA
         ""","qualimap"
     }
 

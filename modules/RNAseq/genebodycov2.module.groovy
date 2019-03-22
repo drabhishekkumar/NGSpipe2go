@@ -18,13 +18,13 @@ geneBodyCov2 = {
     // run the chunk
     transform(".bam") to ("_geneBodyCov.png") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 
             if [[ ! -e "$output.dir" ]]; then
                 mkdir -p "$output.dir";
             fi &&
 
-            Rscript ${TOOL_GENEBODYCOV2}/geneBodyCov.R bam=$input $GENEBODYCOV2_FLAGS
+            ${RUN_R} ${TOOL_GENEBODYCOV2}/geneBodyCov.R bam=$input $GENEBODYCOV2_FLAGS
         ""","geneBodyCov2"
     }
     forward input

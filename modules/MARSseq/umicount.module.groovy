@@ -18,8 +18,8 @@ umicount = {
     // run the chunk
     transform(".bam\$") to (".umicount.tsv.gz") {
         exec """
-            module load umitools/${UMITOOLS_VERSION} &&
-            umi_tools count $UMICOUNT_FLAGS -I $input -S $output1   
+            ${PREPARE_UMITOOLS} &&
+            ${RUN_UMITOOLS} count $UMICOUNT_FLAGS -I $input -S $output1   
         ""","umicount"
     }
 }

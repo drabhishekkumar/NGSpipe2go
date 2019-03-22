@@ -18,10 +18,10 @@ PlotSensorCoverage = {
         ){
         
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
             
             cd $PLOT_SENSOR_COVERAGE_OUTDIR &&
-            Rscript $PLOT_SENSOR_COVERAGE_TOOL_PATH $ESSENTIAL_SENSOR_REF $FACS $inputs
+            ${RUN_R} $PLOT_SENSOR_COVERAGE_TOOL_PATH $ESSENTIAL_SENSOR_REF $FACS $inputs
 
       ""","PlotSensorCoverage"
     }

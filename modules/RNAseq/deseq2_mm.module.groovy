@@ -22,7 +22,7 @@ DE_DESeq2_MM = {
     // should match deseq2.module.groovy, adding a step in between to convert all dupRadar input counts to HTSeq
     produce("DE_DESeq2.RData") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 
             if [[ ! -e "$INPUT_READS_DIR" ]]; then
                 mkdir "$INPUT_READS_DIR";
@@ -33,7 +33,7 @@ DE_DESeq2_MM = {
                 tail -n +2 $f | cut -f1,3 | sort -k1,1 > "$INPUT_READS_DIR/\${F%_dupRadar.tsv}.readcounts.tsv" ;
             done &&
 
-            Rscript ${TOOL_DESeq2}/DE_DESeq2.R $DE_DESeq2_MM_FLAGS
+            ${RUN_R} ${TOOL_DESeq2}/DE_DESeq2.R $DE_DESeq2_MM_FLAGS
         ""","DE_DESeq2_MM"
     }
 }

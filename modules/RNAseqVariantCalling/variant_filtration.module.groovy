@@ -14,10 +14,10 @@ VariantFiltration = {
 
       exec """
             echo 'VERSION INFO'  1>&2 &&
-            echo \$(java -jar ${TOOL_GATK}/GenomeAnalysisTK.jar --version) 1>&2 &&
+            echo \$(${RUN_JAVA} -jar ${TOOL_GATK}/GenomeAnalysisTK.jar --version) 1>&2 &&
             echo '/VERSION INFO' 1>&2 &&
 
-            java $JAVA_FLAGS -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T VariantFiltration -V $input -o $output -window 35 -cluster 3 -filterName FS -filter "FS > 30.0" -filterName QD -filter "QD < 2.0" $GATK_FLAGS
+            ${RUN_JAVA} $JAVA_FLAGS -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T VariantFiltration -V $input -o $output -window 35 -cluster 3 -filterName FS -filter "FS > 30.0" -filterName QD -filter "QD < 2.0" $GATK_FLAGS
       ""","VariantFiltration"
    }
 }

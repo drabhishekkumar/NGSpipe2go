@@ -9,7 +9,7 @@ Bam2FastQ = {
 
    transform(".bam") to(".fq.gz") {
       exec """
-         module load bedtools/${BEDTOOLS_VERSION} &&
+         ${PREPARE_BEDTOOLS} &&
          bamToFastq -i $input | gzip > $output
       ""","Bam2FastQ"
    }

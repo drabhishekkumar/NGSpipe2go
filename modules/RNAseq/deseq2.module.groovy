@@ -20,9 +20,9 @@ DE_DESeq2 = {
     // run the chunk
     produce("DE_DESeq2.RData") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 
-            Rscript ${TOOL_DESeq2}/DE_DESeq2.R $DE_DESeq2_FLAGS
+            ${RUN_R} ${TOOL_DESeq2}/DE_DESeq2.R $DE_DESeq2_FLAGS
         ""","DE_DESeq2"
     }
 }

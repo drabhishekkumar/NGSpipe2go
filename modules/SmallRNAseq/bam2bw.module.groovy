@@ -12,9 +12,9 @@ Bam2bw = {
 
 	transform(".bam") to (".scaled.bw") {
 		exec """
-			module load bedtools/${BEDTOOLS_VERSION} &&
-			module load samtools/${SAMTOOLS_VERSION} &&
-			module load kentUtils/${KENTUTILS_VERSION} &&
+			${PREPARE_BEDTOOLS} &&
+			${PREPARE_SAMTOOLS} &&
+			${PREPARE_KENTUTILS} &&
 
 			if [ ! -d ${TMP} ]; then
 				mkdir -p ${TMP};
@@ -25,15 +25,15 @@ Bam2bw = {
 			then
 				TOTAL_MAPPED=\$(grep $SAMPLE_NAME ${output.dir}/normalization_factors.txt | cut -f 2);
 			else
-				TOTAL_MAPPED=\$( samtools flagstat $input | head -n1| cut -f1 -d" ");
+				TOTAL_MAPPED=\$( ${RUN_SAMTOOLS} flagstat $input | head -n1| cut -f1 -d" ");
 			fi &&
 			
 			CHRSIZES=${TMP}/\$(basename ${input.prefix}).bam2bw.chrsizes &&
-			samtools idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
+			${RUN_SAMTOOLS} idxstats ${input} | cut -f1-2 > \${CHRSIZES} &&
 
 			SCALE=\$(echo "1000000/\$TOTAL_MAPPED" | bc -l) &&
-			genomeCoverageBed -bg -split -scale \${SCALE} -ibam ${input} -g \${CHRSIZES} > ${output.prefix}.bedgraph &&
-			bedGraphToBigWig ${output.prefix}.bedgraph \${CHRSIZES} $output &&
+			${RUN_BEDTOOLS} genomecov -bg -split -scale \${SCALE} -ibam ${input} -g \${CHRSIZES} > ${output.prefix}.bedgraph &&
+			${RUN_BEDGRAPHTOBIGWIG} ${output.prefix}.bedgraph \${CHRSIZES} $output &&
 			rm \${CHRSIZES} ${output.prefix}.bedgraph
 		""","Bam2bw"
 	}

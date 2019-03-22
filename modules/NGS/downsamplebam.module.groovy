@@ -11,13 +11,13 @@ DownsampleBAM = {
 
 	transform(".bam") to (".down.bam") {
 		exec """
-      module load samtools/${SAMTOOLS_VERSION} &&
+      ${PREPARE_SAMTOOLS} &&
 			if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi &&
       BASE=\$(basename $input) &&
-      samtools view -F 0x04 -bh ${input} -o \${TMPDIR}/\${BASE}_mapped.bam &&
-      TOTAL_MAPPED=\$(samtools flagstat \${TMPDIR}/\${BASE}_mapped.bam | grep mapped | head -n 1 | awk '{print \$1 }') &&
+      ${RUN_SAMTOOLS} view -F 0x04 -bh ${input} -o \${TMPDIR}/\${BASE}_mapped.bam &&
+      TOTAL_MAPPED=\$(${RUN_SAMTOOLS} flagstat \${TMPDIR}/\${BASE}_mapped.bam | grep mapped | head -n 1 | awk '{print \$1 }') &&
       echo mapped_info \$TOTAL_MAPPED &&
       if [[ $DOWNSAMPLE_AMOUNT > \$TOTAL_MAPPED ]]; then
         echo "Downsample amount higher than amount of mapped reads. Keeping all reads!" &&
@@ -25,7 +25,7 @@ DownsampleBAM = {
       else
           PROBABILITY=\$(echo "$DOWNSAMPLE_SEED + $DOWNSAMPLE_AMOUNT/\$TOTAL_MAPPED" | bc -l);
       echo Probability \$PROBABILITY &&
-      samtools view -bs \$PROBABILITY -o $output \${TMPDIR}/\${BASE}_mapped.bam;
+      ${RUN_SAMTOOLS} view -bs \$PROBABILITY -o $output \${TMPDIR}/\${BASE}_mapped.bam;
       fi
       ""","DownsampleBAM"
 	}

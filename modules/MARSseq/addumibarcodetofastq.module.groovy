@@ -18,8 +18,8 @@ AddUMIBarcodeToFastq = {
 
   produce(OUTPUTFILE + ".umibarcode.fastq.gz"){
     exec """
-     module load umitools/${UMITOOLS_VERSION} &&
-     umi_tools extract $ADDUMIBARCODE_FLAGS -I $input2 --stdout ${input2.prefix}.barcode.fastq.gz --read2-in $input1 --read2-out=$output &&
+     ${PREPARE_UMITOOLS} &&
+     ${RUN_UMITOOLS} extract $ADDUMIBARCODE_FLAGS -I $input2 --stdout ${input2.prefix}.barcode.fastq.gz --read2-in $input1 --read2-out=$output &&
      rm ${input2.prefix}.barcode.fastq.gz
   ""","AddUMIBarcodeToFastq"
 }

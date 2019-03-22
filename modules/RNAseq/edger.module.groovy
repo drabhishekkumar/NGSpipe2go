@@ -23,9 +23,9 @@ DE_edgeR = {
     // run the chunk
     produce("DE_edgeR.RData") {
         exec """
-            module load R/${R_VERSION} &&
+            ${PREPARE_R} &&
 
-            Rscript ${TOOL_EDGER}/DE_edgeR.R $DE_edgeR_FLAGS
+            ${RUN_R} ${TOOL_EDGER}/DE_edgeR.R $DE_edgeR_FLAGS
         ""","DE_edgeR"
     }
 

@@ -8,10 +8,10 @@ DedupStats = {
            REMOVE_DUP_OUTDIR + "/figure/PCRDuplicates.png") {
 
       exec """
-         module load R/${R_VERSION} &&
+         ${PREPARE_R} &&
 
          cd ${REMOVE_DUP_OUTDIR} &&
-         Rscript ${DEDUP_PLOT_TOOL}
+         ${RUN_R} ${DEDUP_PLOT_TOOL}
 
 		""","DedupStats"
 	}

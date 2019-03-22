@@ -11,9 +11,9 @@ MarkDups2 = {
 	
 	transform(".bam") to (".dupmarked.bam") {
 		exec """
-			module load bamUtil/${BAMUTIL_VERSION} &&
+			${PREPARE_BAMUTIL} &&
 
-            bam dedup --in $input --out $output --log ${input.prefix}_dupmetrics.log --noPhoneHome						           
+            ${RUN_BAMUTIL} dedup --in $input --out $output --log ${input.prefix}_dupmetrics.log --noPhoneHome						           
 		""","MarkDups2"
 	}
 }

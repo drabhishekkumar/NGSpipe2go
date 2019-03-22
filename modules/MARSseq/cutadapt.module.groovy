@@ -30,11 +30,11 @@ Cutadapt = {
 	
      		 exec """
 
-	            	module load cutadapt/${CUTADAPT_VERSION} &&
+	            	${PREPARE_CUTADAPT} &&
         
 			SAMPLENAME_BASE=\$(basename ${SAMPLENAME}) &&
 			
-			cutadapt $CUTADAPT_FLAGS --too-short-output=${CUTADAPT_DISCARDED_DIR}/${SAMPLENAME_BASE}.cutadapt_discarded.fastq.gz --output=$output $input 2>&1 >> ${CUTADAPT_LOGDIR}/\${SAMPLENAME_BASE}.cutadapt.log 
+			${RUN_CUTADAPT} $CUTADAPT_FLAGS --too-short-output=${CUTADAPT_DISCARDED_DIR}/${SAMPLENAME_BASE}.cutadapt_discarded.fastq.gz --output=$output $input 2>&1 >> ${CUTADAPT_LOGDIR}/\${SAMPLENAME_BASE}.cutadapt.log 
 			
 		""","Cutadapt"
 	}

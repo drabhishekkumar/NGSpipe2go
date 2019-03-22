@@ -19,9 +19,9 @@ Bam2bwStrandPE = {
 
 	transform(".bam") to (".scaled.sense.bw", ".scaled.antisense.bw")  {
 		exec """
-			module load bedtools/${BEDTOOLS_VERSION} &&
-			module load samtools/${SAMTOOLS_VERSION} &&
-			module load kentUtils/${KENTUTILS_VERSION} &&
+			${PREPARE_BEDTOOLS} &&
+			${PREPARE_SAMTOOLS} &&
+			${PREPARE_KENTUTILS} &&
 
 			if [ ! -d ${TMP} ]; then
 				mkdir -p ${TMP};
@@ -29,35 +29,35 @@ Bam2bwStrandPE = {
 			
 
 			CHRSIZES=${TMP}/\$(basename ${input.prefix}).bam2bw.chrsizes &&
-			samtools idxstats ${input} | cut -f1-2 > ${CHRSIZES} &&
+			${RUN_SAMTOOLS} idxstats ${input} | cut -f1-2 > ${CHRSIZES} &&
 
-			TOTAL_MAPPED=\$( samtools flagstat $input | head -n1| cut -f1 -d" ") &&
+			TOTAL_MAPPED=\$( ${RUN_SAMTOOLS} flagstat $input | head -n1| cut -f1 -d" ") &&
 			SCALE=\$(echo "1000000/\$TOTAL_MAPPED" | bc -l) &&
 
 
-			samtools view -b -f 128 -F 16 $input > ${TMP}/${EXP}.sense1.bam &&
-			samtools index ${TMP}/${EXP}.sense1.bam &&
+			${RUN_SAMTOOLS} view -b -f 128 -F 16 $input > ${TMP}/${EXP}.sense1.bam &&
+			${RUN_SAMTOOLS} index ${TMP}/${EXP}.sense1.bam &&
 
-			samtools view -b -f 80 $input > ${TMP}/${EXP}.sense2.bam &&
-			samtools index ${TMP}/${EXP}.sense2.bam &&
+			${RUN_SAMTOOLS} view -b -f 80 $input > ${TMP}/${EXP}.sense2.bam &&
+			${RUN_SAMTOOLS} index ${TMP}/${EXP}.sense2.bam &&
 
-			samtools merge -f ${TMP}/${EXP}.sense.bam ${TMP}/${EXP}.sense1.bam ${TMP}/${EXP}.sense2.bam &&
-			samtools index ${TMP}/${EXP}.sense.bam &&
+			${RUN_SAMTOOLS} merge -f ${TMP}/${EXP}.sense.bam ${TMP}/${EXP}.sense1.bam ${TMP}/${EXP}.sense2.bam &&
+			${RUN_SAMTOOLS} index ${TMP}/${EXP}.sense.bam &&
 
-			samtools view -b -f 144 $input > ${TMP}/${EXP}.antisense1.bam &&
-			samtools index ${TMP}/${EXP}.antisense1.bam &&
+			${RUN_SAMTOOLS} view -b -f 144 $input > ${TMP}/${EXP}.antisense1.bam &&
+			${RUN_SAMTOOLS} index ${TMP}/${EXP}.antisense1.bam &&
 
-			samtools view -b -f 64 -F 16 $input > ${TMP}/${EXP}.antisense2.bam &&
-			samtools index ${TMP}/${EXP}.antisense2.bam &&
+			${RUN_SAMTOOLS} view -b -f 64 -F 16 $input > ${TMP}/${EXP}.antisense2.bam &&
+			${RUN_SAMTOOLS} index ${TMP}/${EXP}.antisense2.bam &&
 	
-			samtools merge -f ${TMP}/${EXP}.antisense.bam ${TMP}/${EXP}.antisense1.bam ${TMP}/${EXP}.antisense2.bam &&
-			samtools index ${TMP}/${EXP}.antisense.bam &&
+			${RUN_SAMTOOLS} merge -f ${TMP}/${EXP}.antisense.bam ${TMP}/${EXP}.antisense1.bam ${TMP}/${EXP}.antisense2.bam &&
+			${RUN_SAMTOOLS} index ${TMP}/${EXP}.antisense.bam &&
 
-			genomeCoverageBed -bg -split -scale \${SCALE} -ibam ${TMP}/${EXP}.${FORWARD}.bam -g \${CHRSIZES} > ${output1.prefix}.bedgraph &&
-			bedGraphToBigWig ${output1.prefix}.bedgraph \${CHRSIZES} ${output1} &&
+			${RUN_BEDTOOLS} genomecov -bg -split -scale \${SCALE} -ibam ${TMP}/${EXP}.${FORWARD}.bam -g \${CHRSIZES} > ${output1.prefix}.bedgraph &&
+			${RUN_BEDGRAPHTOBIGWIG} ${output1.prefix}.bedgraph \${CHRSIZES} ${output1} &&
 			
-			genomeCoverageBed -bg -split -scale \${SCALE} -ibam ${TMP}/${EXP}.${REVERSE}.bam -g \${CHRSIZES} > ${output2.prefix}.bedgraph &&
-			bedGraphToBigWig ${output2.prefix}.bedgraph \${CHRSIZES} ${output2} &&
+			${RUN_BEDTOOLS} genomecov -bg -split -scale \${SCALE} -ibam ${TMP}/${EXP}.${REVERSE}.bam -g \${CHRSIZES} > ${output2.prefix}.bedgraph &&
+			${RUN_BEDGRAPHTOBIGWIG} ${output2.prefix}.bedgraph \${CHRSIZES} ${output2} &&
 
 			rm ${CHRSIZES} ${output1.prefix}.bedgraph ${output2.prefix}.bedgraph ${TMP}/${EXP}.*.bam 
 

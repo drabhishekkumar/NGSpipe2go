@@ -22,22 +22,22 @@ BamCoverageStrandsRPKM = {
 	transform(".bam") to (".RPKM.fwd.bw", ".RPKM.rev.bw") {
      	exec """
             export TOOL_DEPENDENCIES=$TOOL_DEPENDENCIES  &&
-            module load deepTools/$DEEPTOOLS_VERSION &&
-            module load samtools/$SAMTOOLS_VERSION &&
+            ${PREPARE_DEEPTOOLS} &&
+            ${PREPARE_SAMTOOLS} &&
             
             if [ -n "\$LSB_JOBID" ]; then
                 export TMPDIR=/jobdir/\${LSB_JOBID};
             fi;
 
-            TOTAL_MAPPED=\$( samtools flagstat $input | head -n1 | cut -f1 -d" ") &&
+            TOTAL_MAPPED=\$( ${RUN_SAMTOOLS} flagstat $input | head -n1 | cut -f1 -d" ") &&
             SCALE=\$(echo "1000000/\$TOTAL_MAPPED" | bc -l) &&
 
-            bamCoverage --bam $input -o $output1 \
+            ${RUN_BAMCOVERAGE} --bam $input -o $output1 \
                 $BAMCOVERAGE_OTHER \
                 --numberOfProcessors $ESSENTIAL_CORES \
                 --filterRNAstrand forward &&
 
-            bamCoverage --bam $input -o $output2 \
+            ${RUN_BAMCOVERAGE} --bam $input -o $output2 \
                 $BAMCOVERAGE_OTHER \
                 --numberOfProcessors $ESSENTIAL_CORES \
                 --filterRNAstrand reverse 

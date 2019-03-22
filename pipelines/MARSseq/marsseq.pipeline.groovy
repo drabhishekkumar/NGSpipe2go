@@ -1,8 +1,8 @@
 MODULE_FOLDER="./NGSpipe2go/modules/"    // may need adjustment for some projects
+CONFIG_FOLDER="./NGSpipe2go/config/"
 
 load MODULE_FOLDER + "MARSseq/essential.vars.groovy"
-load MODULE_FOLDER + "MARSseq/tool.locations.groovy"
-load MODULE_FOLDER + "MARSseq/tool.versions.groovy"
+load CONFIG_FOLDER + "tool.setup.groovy"
 
 load MODULE_FOLDER + "NGS/fastqc.vars.groovy"
 load MODULE_FOLDER + "NGS/fastqc.module.groovy"

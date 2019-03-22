@@ -36,7 +36,7 @@ HTseqCount = {
          fi &&
 
 
-         htseq-count $HTSEQCOUNT_FLAGS $input $HTSEQCOUNT_GENESGTF > $output 2> ${output.prefix}_htseqcountlog.stderr
+         ${RUN_HTSEQCOUNT} $HTSEQCOUNT_FLAGS $input $HTSEQCOUNT_GENESGTF > $output 2> ${output.prefix}_htseqcountlog.stderr
 
       ""","HTseqCount"
    }

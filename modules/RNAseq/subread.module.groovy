@@ -31,7 +31,7 @@ subread_count = {
     // run the chunk
     transform(".bam") to (".raw_readcounts.tsv") {
         exec """
-            module load subread/${SUBREAD_VERSION} &&
+            ${PREPARE_SUBREAD} &&
             if [ -n "\$SLURM_JOBID" ]; then
                 export TMPDIR=/jobdir/\${SLURM_JOBID};
             fi &&
@@ -39,10 +39,10 @@ subread_count = {
             if [[ "$SUBREAD_PAIRED" == "yes" ]]; 
             then
                 echo "We are resorting and doing the repair\n" &&
-                repair -i $input $SUBREAD_CORES -o \${TMPDIR}/\${base} &&
-                featureCounts $SUBREAD_FLAGS -o $output \${TMPDIR}/\${base} 2> ${output.prefix}_subreadlog.stderr;
+                ${RUN_REPAIR} -i $input $SUBREAD_CORES -o \${TMPDIR}/\${base} &&
+                ${RUN_FEATURECOUNTS} $SUBREAD_FLAGS -o $output \${TMPDIR}/\${base} 2> ${output.prefix}_subreadlog.stderr;
             else
-                featureCounts $SUBREAD_FLAGS -o $output $input 2> ${output.prefix}_subreadlog.stderr;
+                ${RUN_FEATURECOUNTS} $SUBREAD_FLAGS -o $output $input 2> ${output.prefix}_subreadlog.stderr;
             fi
         ""","subread_count"
     }

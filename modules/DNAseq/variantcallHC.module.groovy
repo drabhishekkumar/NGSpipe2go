@@ -21,12 +21,12 @@ VariantCallHC = {
     transform (".duprm.realigned.recalibrated.bam") to (".HC.vcf.gz") {
         exec """
             
-            module load jdk/${JAVA_VERSION} &&
+            ${PREPARE_JAVA} &&
             if [ -n "\$SLURM_JOBID" ]; then
 				export TMPDIR=/jobdir/\${SLURM_JOBID};
 			fi                                       &&
 
-            java -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T HaplotypeCaller -nct $GATK_THREADS -R $GATK_BWA_REF --dbsnp $GATK_KNOWN_VARIANTS -I $input -o $output $GATK_FLAGS;
+            ${RUN_JAVA} -Djava.io.tmpdir=$TMPDIR -jar ${TOOL_GATK}/GenomeAnalysisTK.jar -T HaplotypeCaller -nct $GATK_THREADS -R $GATK_BWA_REF --dbsnp $GATK_KNOWN_VARIANTS -I $input -o $output $GATK_FLAGS;
         ""","VariantCallHC"
     }
     

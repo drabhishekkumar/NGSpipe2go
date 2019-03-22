@@ -10,9 +10,9 @@ BamQC = {
 	
 	transform(".bam") to ("_bamqc.zip") {
 		exec """
-			module load BamQC/${BAMQC_VERSION} &&
+			${PREPARE_BAMQC} &&
 			
-			bamqc $BamQC_FLAGS -o $output.dir $input
+			${RUN_BAMQC} $BamQC_FLAGS -o $output.dir $input
 		""","BamQC"
 	}
 

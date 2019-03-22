@@ -14,10 +14,10 @@ CountReadsSummary = {
 
 
       exec """
-         module load R/${R_VERSION} &&
+         ${PREPARE_R} &&
 
          cd $COUNT_READS_OUTDIR &&
-         Rscript $AGREGATE_SCRIPT
+         ${RUN_R} $AGREGATE_SCRIPT
 
       ""","CountReadsSummary"
    }
