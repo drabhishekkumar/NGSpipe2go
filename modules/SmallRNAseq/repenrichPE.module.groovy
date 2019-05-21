@@ -15,9 +15,9 @@ RepEnrichPE = {
             EXP + "_fraction_counts.txt") {
 
     exec """
-        module load RepEnrich/0.1 &&
+        ${PREPARE_REPENRICH} &&
         ${PREPARE_BOWTIE} &&
-        module load bedtools/2.23.0 &&
+        ${PREPARE_BEDTOOLS} &&
         ${PREPARE_SAMTOOLS} &&
 
         MULTI=$output.dir/${EXP}".multimap.fastq" 
@@ -36,7 +36,7 @@ RepEnrichPE = {
 
         echo "Repeat counting:" &&
         
-        python ${RUN_REPENRICH} ${REPEAT_MASKER} $output.dir ${EXP} ${REPEAT_REF} $output.dir/${EXP}.multimap_1.fastq --fastqfile2 $output.dir/${EXP}.multimap_2.fastq $output.dir/${EXP}".bam" --cpus ${REPENRICH_CORES} --is_bed ${REPENRICH_BED} --pairedend TRUE &&
+        ${RUN_REPENRICH} ${REPEAT_MASKER} $output.dir ${EXP} ${REPEAT_REF} $output.dir/${EXP}.multimap_1.fastq --fastqfile2 $output.dir/${EXP}.multimap_2.fastq $output.dir/${EXP}".bam" --cpus ${REPENRICH_CORES} --is_bed ${REPENRICH_BED} --pairedend TRUE &&
 
         rm $INPUT_TMP1 $INPUT_TMP2
 
