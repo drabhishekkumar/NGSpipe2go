@@ -542,3 +542,20 @@ if (UMITOOLS_INSTALLTYPE == "lmod") {
     RUN_UMITOOLS = "umi_tools"
 }
 
+///////////////////////////////////////////////////////////////
+// PYBEDTOOLS (Python library, so no run command)
+///////////////////////////////////////////////////////////////
+if (PYBEDTOOLS_INSTALLTYPE == "lmod") {
+    PREPARE_PYBEDTOOLS = "module load pybedtools/" + PYBEDTOOLS_LMOD_VERSION
+    RUN_PYBEDTOOLS = ":"
+} else if (PYBEDTOOLS_INSTALLTYPE == "conda")  {
+    PREPARE_PYBEDTOOLS = "source activate " + CONDA_ENVS + "/pybedtools/" + PYBEDTOOLS_CONDA_VERSION
+    RUN_PYBEDTOOLS = ":"
+} else if (PYBEDTOOLS_INSTALLTYPE == "singularity")  {
+    PREPARE_PYBEDTOOLS = ":"
+    RUN_PYBEDTOOLS = "singularity run " + SINGULARITY_IMAGES + "/pybedtools/" + PYBEDTOOLS_SIMG_VERSION + "/pybedtools.simg"
+} else {
+    PREPARE_PYBEDTOOLS = ":"
+    RUN_PYBEDTOOLS = ":"
+}
+
