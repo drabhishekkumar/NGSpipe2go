@@ -336,9 +336,9 @@ for(i in 1:nrow(conts)) {
         enrich <- read.csv(file=GO_table_up)
         enrich_reduced <- read.csv(file=GO_table_up_reduced)
         enrich <- enrich[enrich$ID %in% unique(enrich_reduced$parent), ] # get non-redundant terms only
+        enrich <- enrich[order(enrich$p.adjust), ]
         cols   <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "qvalue", "geneID")
         r      <- min(10, nrow(enrich))
-        enrich <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 40, paste0(substr(enrich$geneID, 1, 35), "..."), enrich$geneID) # shorten long lines
         cat(kable(enrich[1:r, cols], row.names=F, align="r", format="markdown"), sep="\n") # show only the top min or top 10 biological processes
         cat("\n", fill=T)
@@ -379,9 +379,9 @@ for(i in 1:nrow(conts)) {
         enrich  <- read.csv(file=GO_table_down)
         enrich_reduced <- read.csv(file=GO_table_down_reduced)
         enrich <- enrich[enrich$ID %in% unique(enrich_reduced$parent), ] # get non-redundant terms only
+        enrich <- enrich[order(enrich$p.adjust), ]
         cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "qvalue", "geneID")
         r       <- min(10, nrow(enrich))
-        enrich  <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 40, paste0(substr(enrich$geneID, 1, 35), "..."), enrich$geneID) # shorten long lines
         cat(kable(enrich[1:r, cols], row.names=F, align="r", format="markdown"), sep="\n") # show only the top min or top 10 biological processes
         cat("\n", fill=T)
