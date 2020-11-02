@@ -336,7 +336,6 @@ for(i in 1:nrow(conts)) {
         enrich <- enrich[enrich$ID == enrich$parent, ] # get non-redundant terms only
         cols   <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "geneID")
         r      <- min(10, nrow(enrich))
-        enrich <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 40, paste0(substr(enrich$geneID, 1, 35), "..."), enrich$geneID) # shorten long lines
         cat(kable(enrich[1:r, cols], row.names=F, align="r", format="markdown"), sep="\n") # show only the top min or top 10 biological processes
         cat("\n", fill=T)
@@ -377,7 +376,6 @@ for(i in 1:nrow(conts)) {
         enrich <- enrich[enrich$ID == enrich$parent, ] # get non-redundant terms only
         cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "geneID")
         r       <- min(10, nrow(enrich))
-        enrich  <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 40, paste0(substr(enrich$geneID, 1, 35), "..."), enrich$geneID) # shorten long lines
         cat(kable(enrich[1:r, cols], row.names=F, align="r", format="markdown"), sep="\n") # show only the top min or top 10 biological processes
         cat("\n", fill=T)
