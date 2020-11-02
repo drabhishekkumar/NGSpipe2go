@@ -314,7 +314,6 @@ for(i in 1:nrow(conts)) {
     GO_treemap_up <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_treemap_up_genes.png")
     GO_cnet_up    <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_cnetplot_up_genes.png")
     GO_table_up   <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_Enrichment_up_genes.csv")
-    GO_table_up_reduced <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_Enrichment_Reduced_up_genes.csv")
 
     # if there are GO enrichment results (the barplot was created)
     if(file.exists(GO_bar_up)) {
@@ -324,7 +323,7 @@ for(i in 1:nrow(conts)) {
         cat("![GO_Analysis img](", GO_bar_up, ")\n", fill=T)
 
         # GO enriched terms in a treemap
-        cat("Gene Ontology Biological Processes (all) of the up-regulated genes with FDR < 0.01, grouped by similarity.", fill=T)
+        cat("Gene Ontology Biological Processes (all) of the up-regulated genes with FDR < 0.01, grouped by similarity. Color and area represent the cluster and the significance (-log10 adjusted p-value) of the enrihcment, respectively.", fill=T)
         cat("![GO_Analysis img](", GO_treemap_up, ")\n", fill=T)
 
         # GO enriched terms in a cnetplot
@@ -334,9 +333,8 @@ for(i in 1:nrow(conts)) {
         # and table of OG enriched terms
         cat("Top enriched Gene Ontology non-redundant Biological Processes of the up-regulated genes with FDR < 0.01:\n", fill=T)
         enrich <- read.csv(file=GO_table_up)
-        enrich_reduced <- read.csv(file=GO_table_up_reduced)
-        enrich <- enrich[enrich$ID %in% unique(enrich_reduced$parent), ] # get non-redundant terms only
-        cols   <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "qvalue", "geneID")
+        enrich <- enrich[enrich$ID == enrich$parent, ] # get non-redundant terms only
+        cols   <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "geneID")
         r      <- min(10, nrow(enrich))
         enrich <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 40, paste0(substr(enrich$geneID, 1, 35), "..."), enrich$geneID) # shorten long lines
@@ -357,7 +355,6 @@ for(i in 1:nrow(conts)) {
     GO_treemap_down <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_treemap_down_genes.png")
     GO_cnet_down    <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_cnetplot_down_genes.png")
     GO_table_down   <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_Enrichment_down_genes.csv")
-    GO_table_down_reduced <- paste0(SHINYREPS_GO_ENRICHMENT, "/", gsub("=.*", "", conts[i, 1]), "_GO_Enrichment_Reduced_down_genes.csv")
 
     # if there are GO enrichment results (the barplot was created)
     if(file.exists(GO_bar_down)) {
@@ -367,7 +364,7 @@ for(i in 1:nrow(conts)) {
         cat("![GO_Analysis img](", GO_bar_down, ")\n", fill=T)
 
         # GO enriched terms in a treemap
-        cat("Gene Ontology Biological Processes (all) of the down-regulated genes with FDR < 0.01, grouped by similarity.", fill=T)
+        cat("Gene Ontology Biological Processes (all) of the down-regulated genes with FDR < 0.01, grouped by similarity. Color and area represent the cluster and the significance (-log10 adjusted p-value) of the enrihcment, respectively.", fill=T)
         cat("![GO_Analysis img](", GO_treemap_down, ")\n", fill=T)
 
         # GO enriched terms in a cnetplot
@@ -377,9 +374,8 @@ for(i in 1:nrow(conts)) {
         # and table of OG enriched terms
         cat("Top enriched Gene Ontology non-redundant Biological Processes of the down-regulated genes with FDR < 0.01:\n", fill=T)
         enrich  <- read.csv(file=GO_table_down)
-        enrich_reduced <- read.csv(file=GO_table_down_reduced)
-        enrich <- enrich[enrich$ID %in% unique(enrich_reduced$parent), ] # get non-redundant terms only
-        cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "qvalue", "geneID")
+        enrich <- enrich[enrich$ID == enrich$parent, ] # get non-redundant terms only
+        cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "geneID")
         r       <- min(10, nrow(enrich))
         enrich  <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 40, paste0(substr(enrich$geneID, 1, 35), "..."), enrich$geneID) # shorten long lines
@@ -407,7 +403,7 @@ for(i in 1:nrow(conts)) {
          # and table of Pathways enriched
          cat("Pathways enrichment table of the up-regulated genes with FDR < 0.01:\n", fill=T)
          enrich  <- read.csv(file=Pathway_table_up)
-         cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "qvalue", "geneID")
+         cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "geneID")
          r       <- min(10, nrow(enrich))
          enrich  <- as.data.frame(enrich)
          enrich$geneID <- ifelse(nchar(enrich$geneID) > 10, paste0(substr(enrich$geneID, 0, 35), "..."), enrich$geneID) # shorten long lines
@@ -436,7 +432,7 @@ for(i in 1:nrow(conts)) {
         # and table of Pathways enriched
         cat("Pathways enrichment table of the down-regulated genes with FDR < 0.01:\n", fill=T)
         enrich  <- read.csv(file=Pathway_table_down)
-        cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "qvalue", "geneID")
+        cols    <- c("ID", "Description", "GeneRatio", "BgRatio", "pvalue", "p.adjust", "geneID")
         r       <- min(10, nrow(enrich))
         enrich  <- as.data.frame(enrich)
         enrich$geneID <- ifelse(nchar(enrich$geneID) > 10, paste0(substr(enrich$geneID, 0, 35), "..."), enrich$geneID) # shorten long lines

@@ -115,11 +115,11 @@ processContrast <-  function(x) {
         enrichedReactome <- gsfilter(enrichedReactome, by = "Count", min = 2)
                                    
         # write GO and Pathway enrichment tables into output file 
-        write.csv(as.data.frame(enriched),
+        write.csv(as.data.frame(enriched), row.names=FALSE,
                   file=paste0(out, "/", contrast, "_GO_Enrichment_", suffix, "_genes.csv"))
-        write.csv(as.data.frame(enrichedKEGG),
+        write.csv(as.data.frame(enrichedKEGG), row.names=FALSE,
                   file=paste0(out, "/", contrast, "_KEGG_Pathway_Enrichment_", suffix, "_genes.csv"))
-        write.csv(as.data.frame(enrichedReactome),
+        write.csv(as.data.frame(enrichedReactome), row.names=FALSE,
                   file=paste0(out, "/", contrast, "_Reactome_Pathway_Enrichment_", suffix, "_genes.csv"))
 
 
@@ -135,8 +135,12 @@ processContrast <-  function(x) {
             CairoPNG(file=paste0(out, "/", contrast, "_GO_treemap_", suffix, "_genes.png"), width=1200, height=800)
             treemapPlot(reducedTerms)
             dev.off()
-            write.csv(reducedTerms, file=paste0(out, "/", contrast, "_GO_Enrichment_Reduced_", suffix, "_genes.csv"))
 
+            # overwrite GO enrichment table with parent term information
+            x <- merge(go_analysis, reducedTerms, by=1, all.x=TRUE)  # first column is term ID
+            write.csv(x, row.names=FALSE, file=paste0(out, "/", contrast, "_GO_Enrichment_", suffix, "_genes.csv"))
+
+            # remove redundant terms form enrichGO enrichment results, and do barplot and cnetplot of top terms
             enriched_reduced <- enriched
             enriched_reduced@result <- subset(enriched_reduced@result, ID %in% unique(reducedTerms$parent))
 
